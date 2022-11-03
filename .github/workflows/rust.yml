@@ -1,6 +1,7 @@
-name: Rust
+name: Build guessing_game
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "main" ]
   pull_request:
