@@ -2,6 +2,9 @@ pub fn add(left: usize, right: usize) -> usize {
     left + right
 }
 
+pub fn panic_function() {
+    panic!("Arbitrary panic test!");
+}
 
 #[cfg(test)]
 mod tests {
@@ -13,13 +16,9 @@ mod tests {
         let result = add(2, 2);
         assert_eq!(result, 4);
     }
-    // We might also have non-test functions in the tests module to 
+    // We might also have non-test functions in the tests module to
     // help set up common scenarios or perform common operations
     // so we always need to indicate which functions are tests using the test attribute.
-    #[test]
-    fn another_test() {
-        panic!("Arbitrary panic test!");
-    }
 
     #[test]
     fn say_hello() {
@@ -27,6 +26,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn custom_message() {
         let result = add(2, 2);
         assert!(
@@ -35,4 +35,17 @@ mod tests {
             result
         );
     }
+
+    #[test]
+    #[should_panic]
+    fn should_panic_test() {
+        panic_function();
+    }
+
+    #[test]
+    #[ignore]
+    fn ignore_test_example() {
+        panic!("Test fails, ignore unless specifically requested")
+    }
+
 }
