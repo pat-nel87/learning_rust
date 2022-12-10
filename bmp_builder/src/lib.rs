@@ -4,27 +4,49 @@ use rustbitmap::Rgba;
 use std::error::Error;
 
 pub fn run() -> Result<(), Box<dyn Error>> {
-    // unique identifier for .bmp file
-    let session_id_x = &rand::thread_rng().gen_range(0..255);
-    let session_id_y = &rand::thread_rng().gen_range(0..255);
-    let session_id_z = &rand::thread_rng().gen_range(0..255);
+    
+    let mut _new_random_bitmap = BitMapSetup::create();
 
+    //new_random_bitmap.fill_region(5, 5, random_rgb).unwrap();
+    //new_random_bitmap.save_as(&random_id).unwrap();
     let random_rgb = random_color();
-
-    let mut new_random_bitmap = random_bitmap();
-    new_random_bitmap.fill_region(5, 5, random_rgb).unwrap();
-
-    let random_id = format!("{}-{}-{}.bmp", session_id_x, session_id_y, session_id_z);
-    new_random_bitmap.save_as(&random_id).unwrap();
-
+    _new_random_bitmap.random_bmp.fill_region(5,5, random_rgb);
+    _new_random_bitmap.random_bmp.save_as(&_new_random_bitmap.random_file_name);
     Ok(())
 }
 
 // TO DO - place inside impl of a pub struct RandomBitMap
-pub fn random_bitmap() -> BitMap {
+
+
+pub struct TwoDimensionalScalar(u32, u32);
+
+pub struct BitMapSetup {
+    pub random_file_name: String,
+    pub random_height_width: TwoDimensionalScalar,
+    pub random_bmp: BitMap,
+}
+
+impl BitMapSetup {
+    pub fn create() -> BitMapSetup {
+    let random_id_x = &rand::thread_rng().gen_range(0..255);
+    let random_id_y = &rand::thread_rng().gen_range(0..255);
+    let random_id_z = &rand::thread_rng().gen_range(0..255);
+
+    let random_file_name = format!("{}-{}-{}.bmp", random_id_x, random_id_y, random_id_z);
+    
     let height = rand::thread_rng().gen_range(1..240);
     let width = rand::thread_rng().gen_range(1..120);
-    let new_bitmap = BitMap::new(height, width);
+
+    let random_height_width: TwoDimensionalScalar = TwoDimensionalScalar(height, width);
+    
+    let random_bmp = random_bitmap(&random_height_width);
+
+    BitMapSetup { random_file_name, random_height_width, random_bmp }
+    }   
+}
+
+pub fn random_bitmap(random_scalar: &TwoDimensionalScalar) -> BitMap {
+    let new_bitmap = BitMap::new(random_scalar.0, random_scalar.1);
     new_bitmap
 }
 
@@ -32,7 +54,6 @@ pub fn random_color() -> Rgba {
     let red = rand::thread_rng().gen_range(0..255);
     let green = rand::thread_rng().gen_range(0..255);
     let blue = rand::thread_rng().gen_range(0..255);
-
     let new_random_color = Rgba::rgb(red, green, blue);
     new_random_color
 }
