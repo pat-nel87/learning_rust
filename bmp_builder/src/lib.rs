@@ -4,19 +4,12 @@ use rustbitmap::Rgba;
 use std::error::Error;
 
 pub fn run() -> Result<(), Box<dyn Error>> {
-    
     let mut _new_random_bitmap = BitMapSetup::create();
-
-    //new_random_bitmap.fill_region(5, 5, random_rgb).unwrap();
-    //new_random_bitmap.save_as(&random_id).unwrap();
     let random_rgb = random_color();
     _new_random_bitmap.random_bmp.fill_region(5,5, random_rgb);
     _new_random_bitmap.random_bmp.save_as(&_new_random_bitmap.random_file_name);
     Ok(())
 }
-
-// TO DO - place inside impl of a pub struct RandomBitMap
-
 
 pub struct TwoDimensionalScalar(u32, u32);
 
